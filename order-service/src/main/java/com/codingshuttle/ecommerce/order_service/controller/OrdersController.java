@@ -23,12 +23,6 @@ public class OrdersController {
         return "Hello from Orders Service";
     }
 
-    @PostMapping("/create-order")
-    public ResponseEntity<OrderRequestDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
-        OrderRequestDto orderRequestDto1 = orderService.createOrder(orderRequestDto);
-        return ResponseEntity.ok(orderRequestDto1);
-    }
-
     @GetMapping
     public ResponseEntity<List<OrderRequestDto>> getAllOrders(HttpServletRequest httpServletRequest) {
         log.info("Fetching all orders via controller");
