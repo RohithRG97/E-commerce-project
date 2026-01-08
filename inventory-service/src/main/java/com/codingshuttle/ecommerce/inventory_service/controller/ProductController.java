@@ -26,7 +26,7 @@ public class ProductController {
     private final DiscoveryClient discoveryClient;
     private final RestClient restClient;
 
-    @GetMapping("/getOrders")
+    @GetMapping("/fetchOrders")
     public String getOrders() {
         ServiceInstance orderService = discoveryClient.getInstances("order-service").getFirst();
 
