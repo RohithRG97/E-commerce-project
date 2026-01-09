@@ -26,13 +26,12 @@ public class ProductController {
     private final DiscoveryClient discoveryClient;
     private final RestClient restClient;
 
-    @GetMapping("/getOrders")
+    @GetMapping("/fetchOrders")
     public String getOrders() {
         ServiceInstance orderService = discoveryClient.getInstances("order-service").getFirst();
 
         URI uri = URI.create(
-                "http://localhost:" + orderService.getPort() +
-                        "/api/v1/orders/helloOrders"
+                orderService.getUri() + "/orders/core/helloOrders"
         );
 
         return restClient.get()
