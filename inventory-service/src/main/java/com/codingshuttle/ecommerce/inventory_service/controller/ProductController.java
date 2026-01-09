@@ -31,8 +31,7 @@ public class ProductController {
         ServiceInstance orderService = discoveryClient.getInstances("order-service").getFirst();
 
         URI uri = URI.create(
-                "http://localhost:" + orderService.getPort() +
-                        "/api/v1/orders/helloOrders"
+                orderService.getUri() + "/orders/core/helloOrders"
         );
 
         return restClient.get()
