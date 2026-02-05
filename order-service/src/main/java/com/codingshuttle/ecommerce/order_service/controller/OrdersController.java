@@ -36,4 +36,18 @@ public class OrdersController {
         OrderRequestDto order = orderService.getOrderById(id);
         return ResponseEntity.ok(order);  // Returns 200 OK with the order
     }
+
+    @PostMapping("/create-order")
+    public ResponseEntity<OrderRequestDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
+
+        OrderRequestDto orderRequestDto1 = orderService.createOrder(orderRequestDto);
+        return ResponseEntity.ok(orderRequestDto1);
+    }
+
+    @PostMapping("/cancel-order")
+    public ResponseEntity<OrderRequestDto> cancelOrder(@RequestBody OrderRequestDto orderRequestDto) {
+        OrderRequestDto orderRequestDto1 = orderService.cancelOrder(orderRequestDto);
+        return ResponseEntity.ok(orderRequestDto1);
+    }
+
 }
