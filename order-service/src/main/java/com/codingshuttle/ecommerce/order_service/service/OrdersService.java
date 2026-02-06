@@ -1,7 +1,9 @@
 package com.codingshuttle.ecommerce.order_service.service;
 
 import com.codingshuttle.ecommerce.order_service.clients.InventoryOpenFeignClient;
+import com.codingshuttle.ecommerce.order_service.clients.ShippingOpenFeignClient;
 import com.codingshuttle.ecommerce.order_service.dto.OrderRequestDto;
+import com.codingshuttle.ecommerce.order_service.dto.ShippingResponse;
 import com.codingshuttle.ecommerce.order_service.entity.OrderItem;
 import com.codingshuttle.ecommerce.order_service.entity.OrderStatus;
 import com.codingshuttle.ecommerce.order_service.entity.Orders;
@@ -22,6 +24,7 @@ public class OrdersService {
     private final OrdersRepository orderRepository;
     private final ModelMapper modelMapper;
     private final InventoryOpenFeignClient inventoryOpenFeignClient;
+    private final ShippingOpenFeignClient shippingOpenFeignClient;
 
     public List<OrderRequestDto> getAllOrders() {
         log.info("Fetching all orders");
@@ -49,7 +52,11 @@ public class OrdersService {
         orders.setTotalPrice(totalPrice);
         orders.setOrderStatus(OrderStatus.CONFIRMED);
         Orders savedOrder = orderRepository.save(orders);
-        return modelMapper.map(savedOrder, OrderRequestDto.class);
+        orderRequestDto.setId(savedOrder.getId());
+        String shippingStatus = shippingOpenFeignClient.createShippingRecord(orderRequestDto);
+        OrderRequestDto orderRequestDto1 = modelMapper.map(savedOrder, OrderRequestDto.class);
+        orderRequestDto1.setShippingStatus(shippingStatus);
+        return orderRequestDto1;
     }
 
     public OrderRequestDto createOrderFallback(OrderRequestDto orderRequestDto, Throwable throwable) {
