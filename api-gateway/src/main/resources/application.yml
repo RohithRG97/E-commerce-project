@@ -13,7 +13,8 @@ spring:
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/orders/**
-#          filters:
+          filters:
+            - name: LoggingOrdersFilter
 #            - RedirectTo=302, https://youtube.com
         - id: inventory-service
           uri: lb://INVENTORY-SERVICE
